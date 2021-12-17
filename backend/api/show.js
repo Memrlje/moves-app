@@ -18,6 +18,11 @@ router.get('/shows', async (req, res) => {
         var query = req._parsedUrl.query;
         if(query === 'undefined' || query === ''){
             const shows = await Show.find({});
+            shows.sort((a, b) => {
+                averageRatingA = a.ratings.reduce((a,b) => a + b, 0) / a.ratings.length;
+                averageRatingB = b.ratings.reduce((a,b) => a + b, 0) / b.ratings.length;
+                return averageRatingB - averageRatingA
+            });
             res.send(shows);
         }else{
             const shows = await Show.find(

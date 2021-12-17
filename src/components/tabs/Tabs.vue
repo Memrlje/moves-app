@@ -102,6 +102,7 @@
     border-left: 1px solid rgb(157, 180, 192);
     border-top: 1px solid rgb(157, 180, 192);
     border-right: 1px solid rgb(157, 180, 192);
+    
   }
 
   .tabs li.tab__selected {

@@ -4,6 +4,7 @@
        <template v-slot:movies-tab>
            <Card
            v-for="(movie, index) in movies"
+           :id="movie._id"
            :key="index"
            :title="movie.title"
            :description="movie.description"
@@ -16,6 +17,7 @@
            <Card
            v-for="(show, index) in shows"
            :key="index"
+           :id="show._id"
            :title="show.title"
            :description="show.description"
            :ratings="show.ratings"

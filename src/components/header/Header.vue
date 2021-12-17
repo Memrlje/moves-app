@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <p>MemrljDB ratings</p>
+        <p style="padding: 10px 0">MemrljDB ratings</p>
         <Search></Search>
         <tabs>
             <tab title="Movies">

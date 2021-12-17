@@ -3,11 +3,11 @@
         <div class="columns">
             <div class="column col-6 col-md-8 col-mx-auto">
                 
-            <!-- <img slot="image" :src="imageSrc"> -->
+            <img slot="image" class="image" :src="imageSrc">
             <span slot="title"> {{title}}</span>
-            <p v-if="director" style="text-align: right;">Diretcted by: {{director}}</p>
-            <p slot="body">{{description}}</p>
-            <p style="text-align: left;">Actors: {{allActors}}</p>
+            <p v-if="director" style="text-align: right; margin-bottom: 3em">Diretcted by: {{director}}</p>
+            <p slot="body" style="text-align: center; margin-bottom: 3em">{{description}}</p>
+            <p style="text-align: left; margin-bottom: 3em">Actors: {{allActors}}</p>
             <div class="ratings">
                 <StarRating v-model="ratingToShow"
                 :star-size="20"
@@ -23,13 +23,14 @@
 </template>
 
 <script>
-import StarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating';
 
 export default {
     components: {
         StarRating
     },
     props: {
+        id: {},
         title: {
             type: String,
         },
@@ -50,12 +51,10 @@ export default {
     data() {
         return {
             userRated: false,
+            imageSrc: require('../../assets/movie_img.jpg'),
         }
     },
     computed: {
-        imageSrc() {
-            return 'https://source.unsplash.com/g1Kr4Ozfoac/' + '480x320';
-        },
         averageRating() {
             let totalRatingsSum = this.ratings.reduce((a, b) => a + b, 0)
             let total = totalRatingsSum / this.ratings.length;
@@ -75,7 +74,7 @@ export default {
     methods: {
         ratingSelected(val) {
             this.userRated = true;
-            this.ratings.push(val)
+            this.ratings.push(val);
         }
     }
 }
@@ -94,4 +93,13 @@ export default {
     .ratings {
         margin: 2em 0 0 0;
     }
+    .image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        object-position: bottom;
+        border-radius: 1em;
+        margin-bottom: 4em;
+    }
+    
 </style>

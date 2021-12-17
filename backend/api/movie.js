@@ -15,6 +15,17 @@ router.post('/movies', async (req, res) => {
     
     
 })
+router.post('/movies:id', async (req, res) => {
+    const movie = new Movie(req.body);
+    try {
+        await movie.save();
+        res.send(movie);  
+    }catch (e){
+        res.status(400).send(e)
+    }
+    
+    
+})
 
 
 router.get('/movies', async (req, res) => {
@@ -22,6 +33,11 @@ router.get('/movies', async (req, res) => {
         var query = req._parsedUrl.query;
         if(query === 'undefined' || query === ''){
             const movies = await Movie.find({});
+            movies.sort((a, b) => {
+                averageRatingA = a.ratings.reduce((a,b) => a + b, 0) / a.ratings.length;
+                averageRatingB = b.ratings.reduce((a,b) => a + b, 0) / b.ratings.length;
+                return averageRatingB - averageRatingA
+            });
             res.send(movies);
         }else{
             const movies = await Movie.find(
