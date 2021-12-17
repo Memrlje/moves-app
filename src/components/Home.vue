@@ -8,7 +8,7 @@
            :title="movie.title"
            :description="movie.description"
            :ratings="movie.ratings"
-           :actors="movie.actors"
+           :actors="movie.stars"
            :director="movie.director"
            ></Card>
        </template>
@@ -19,7 +19,7 @@
            :title="show.title"
            :description="show.description"
            :ratings="show.ratings"
-           :actors="show.actors"
+           :actors="show.stars"
            :director="show.director"
            ></Card>
        </template>
@@ -30,6 +30,9 @@
 <script>
     import Header from './header/Header.vue';
     import Card from './cards/ItemCard.vue';
+    import MovieService from '../services/MovieService.js';
+    import ShowService from '../services/ShowService.js';
+    import {mapState, mapActions} from 'vuex'
 
     export default {
         components: {
@@ -37,111 +40,20 @@
             Card,
         },
         data() {
-            return {
-                movies: [
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Dva',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Tri',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Cetiri',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Pet',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Sest',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Sedam',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Film Osam',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                ],
-                shows: [
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Dva',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Tri',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Cetiri',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Pet',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Sest',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Sedam',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                    {
-                    ratings: [2, 2, 4, 4, 3, 5, 1],
-                    title: 'Show Osam',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-                    director: 'Director Jedan',
-                    actors: ['Actor Jedan', 'Actor Dva', 'Actor Tri']
-                    },
-                ]
-                
+            return {    
             }
+        },
+        methods: {
+            ...mapActions(['filterMovies', 'filterShows'])
+        },
+        computed: {
+            ...mapState(['movies', 'shows'])
+        },
+        async created() {
+            let movies = await MovieService.get_movies();
+            this.filterMovies(movies)
+            let shows = await ShowService.get_shows();
+            this.filterShows(shows)
         }
     }
 </script>

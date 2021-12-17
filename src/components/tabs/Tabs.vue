@@ -17,11 +17,15 @@
 </template>
 
 <script>
+    import {mapState, mapActions} from 'vuex'
+    import MovieService from '../../services/MovieService.js';
+    import ShowService from '../../services/ShowService';
+
   export default {
     data () {
       return {
         selectedIndex: 0, // the index of the selected tab,
-        tabs: []         // all of the tabs
+        tabs: []         
       }
     },
     created () {
@@ -30,11 +34,24 @@
     mounted () {
       this.selectTab(0)
     },
+    computed: {
+      ...mapState(['activeTabIndex', 'movies', 'shows'])
+    },
     methods: {
-      selectTab (i) {
-        this.selectedIndex = i
+      ...mapActions(['changeTab', 'filterMovies', 'filterShows']),
 
-        // loop over all the tabs
+      async selectTab (i) {
+
+        this.selectedIndex = i
+        this.changeTab(i)
+        if(i === 0 ) {
+          let movies = await MovieService.get_movies();
+          this.filterMovies(movies)
+        }else if(i === 1) {
+          let shows = await ShowService.get_shows();
+          this.filterShows(shows)
+        }
+        
         this.tabs.forEach((tab, index) => {
           tab.isActive = (index === i)
         })

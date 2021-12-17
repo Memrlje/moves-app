@@ -5,13 +5,18 @@
                 
             <!-- <img slot="image" :src="imageSrc"> -->
             <span slot="title"> {{title}}</span>
-            <p style="text-align: right;">Diretcted by: {{director}}</p>
+            <p v-if="director" style="text-align: right;">Diretcted by: {{director}}</p>
             <p slot="body">{{description}}</p>
             <p style="text-align: left;">Actors: {{allActors}}</p>
-            <StarRating v-model="ratingToShow"
-            :star-size="20"
-            @rating-selected="ratingSelected"
-            ></StarRating>
+            <div class="ratings">
+                <StarRating v-model="ratingToShow"
+                :star-size="20"
+                @rating-selected="ratingSelected"
+                ></StarRating>
+                <i class="material-icons">star</i>
+                <p>{{averageRating}}</p>
+            </div>
+            
             </div>
         </div>
     </div>
@@ -51,21 +56,22 @@ export default {
         imageSrc() {
             return 'https://source.unsplash.com/g1Kr4Ozfoac/' + '480x320';
         },
-        ratingToShow() {
-            if(this.userRated) {
-                return this.ratings[this.ratings.length - 1];
-            }else {
-                return this.averageRating;
-            }
-        },
         averageRating() {
             let totalRatingsSum = this.ratings.reduce((a, b) => a + b, 0)
-            return totalRatingsSum / this.ratings.length;
+            let total = totalRatingsSum / this.ratings.length;
+            var roundedNum = Math.round(total * 10) / 10
+            return roundedNum;
+             
         },
         allActors() {
             return this.actors.toString()
-        }
+        },
+        ratingToShow() {
+
+        return !this.userRated ? this.averageRating : this.ratings.at(-1)
     },
+    },
+    
     methods: {
         ratingSelected(val) {
             this.userRated = true;
@@ -84,5 +90,8 @@ export default {
         padding: 4em;
         margin: 5em auto;
         color: rgb(224, 251, 252);
+    }
+    .ratings {
+        margin: 2em 0 0 0;
     }
 </style>

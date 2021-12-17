@@ -1,46 +1,59 @@
 <template>
     <div class="search-container">
         <input
+            v-model="searchPhrase"
             ref="searchInput"
             class="search-input"
+            @keyup="searchPhraseChanged"
         />
     </div>
 </template>
 
 <script>
+    import MovieService from '../../services/MovieService';
+    import ShowService from '../../services/ShowService';
+    import {mapState, mapActions} from 'vuex'
+
 export default {
     props: {
         
     },
-    // data() {
-    //     return {
-    //         searchPhrase: this.value
-    //     }
-    // },
-    // methods: {
-    //     clearSearchField() {
-    //             // Clear only if not empty string
-    //             this.searchPhrase = "";
-    //         },
-    // },
-    // watch: {
-    //         searchPhrase(val) {
-    //             if (this.searchPhrase && this.searchPhrase.length > 0) {
-    //                 if (this.onChange) {
-    //                     this.onChange(val);
-    //                 }
-    //             } else {
-    //                 if (this.onClear) {
-    //                     this.onClear();
-    //                 }
-    //             }
-    //         },
-    //         value(val) {
-    //             if (this.watchValue) {
-    //                 this.searchPhrase = val;
-    //             }
-    //         }
-    //     }
+    data() {
+        return {
+            searchPhrase: ''
+        }
+    },
+    computed: {
+        ...mapState(['activeTabIndex', 'movies'])
+    },
+    methods: {
+        ...mapActions(['filterMovies', 'filterShows']),
+
+        async searchPhraseChanged() {
+            if(this.searchPhrase.length > 2) {
+                if(this.activeTabIndex === 0) {
+                    let movies = await MovieService.get_movies(this.searchPhrase);
+                    this.filterMovies(movies)
+                }else if(this.activeTabIndex === 1) {
+                    let shows = await ShowService.get_shows(this.searchPhrase);
+                    this.filterShows(shows)
+                }
+            }else {
+               if(this.activeTabIndex === 0) {
+                    let movies = await MovieService.get_movies();
+                    this.filterMovies(movies)
+                }else if(this.activeTabIndex === 1) {
+                    let shows = await ShowService.get_shows();
+                    this.filterShows(shows)
+                } 
+            }
+        }
+    },
+    watch: {
+        activeTabIndex() {
+            this.searchPhrase = ''
+        }
+    }
 }
 </script>
 

@@ -25,5 +25,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
+  height: 100%;
+}
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+  background-color: rgb(157, 180, 192);
 }
 </style>

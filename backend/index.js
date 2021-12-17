@@ -1,31 +1,17 @@
 const express = require('express');
+const cors = require('cors');
 require('./db/mongoose');
-const Movie = require('./models/movies');
-const Show = require('./models/shows');
+
+const movieApi = require('./api/movie');
+const showApi = require('./api/show');
 
 const app = express();
+app.use(cors())
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-
-app.post('/movies', (req, res) => {
-    const movie = new Movie(req.body);
-
-    movie.save().then(() => {
-        res.send(movie);
-    }).catch((e) => {
-        res.send(e);
-    })
-})
-app.post('/shows', (req, res) => {
-    const show = new Show(req.body);
-
-    show.save().then(() => {
-        res.send(show);
-    }).catch((e) => {
-        res.send(e);
-    })
-})
+app.use(movieApi);
+app.use(showApi);
 
 
 
